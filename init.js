@@ -8,6 +8,8 @@ function init() {
     fs.mkdirSync(".gitj/refs/heads");
     // creates a file called .gitj/refs/heads/master
     fs.writeFileSync(".gitj/refs/heads/master", "");
+    // creates a file called .gitj/HEAD
+    fs.writeFileSync(".gitj/HEAD", "ref: refs/heads/master");
 }
 
 init();
