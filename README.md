@@ -1,8 +1,5 @@
-# gitjs
-
-Read my article here: https://levelup.gitconnected.com/implement-a-simple-version-control-with-javascript-to-understand-git-better-2307001dfe00
-
-# Implement a Simple Version Control with JavaScript to Understand Git Better!
+# Implement a Simple Version Control with JavaScript to Understand Git Better! GitJS
+Read my article here: [implement-a-simple-version-control-with-javascript-to-understand-git-better](https://levelup.gitconnected.com/implement-a-simple-version-control-with-javascript-to-understand-git-better-2307001dfe00)
 
 ## What is Git or Version Control?
 
