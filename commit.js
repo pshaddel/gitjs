@@ -24,6 +24,8 @@ async function commit(commitMessage) {
     await fs.writeFile(`.gitj/objects/${commitHash.slice(0, 2)}/${commitHash.slice(2)}`, commitContent);
     // set the head of current branch to the commit hash
     await fs.writeFile('.gitj/refs/heads/master', commitHash);
+    // empty the index(where we store staged files)
+    await fs.writeFile('.gitj/index', '');
     return commitHash;
 }
 commit('first commit');
