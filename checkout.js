@@ -20,35 +20,50 @@ async function checkout(commitHash) {
     await createFilesAndFolders(baseTree, folderPath);
 }
 
+
 async function getTreeHashFromCommit(commitHash) {
     try {
-        const commitContent = await fs.readFile(`.gitj/objects/${commitHash.slice(0, 2)}/${commitHash.slice(2)}`, 'utf-8');
-        const array = commitContent.split('\n').map(e=> e.split(' '))
+        let commitContent = null;
+        // Git first check if the passed arg is a branch name
+        if (await isBranch(commitHash)) {
+            // if it is a branch name, it will read the file and get the commit hash
+            const branchHash = await fs.readFile(`.gitj/refs/heads/${commitHash}`, 'utf-8');
+            commitContent = await fs.readFile(`.gitj/objects/${branchHash.slice(0, 2)}/${branchHash.slice(2)}`, 'utf-8');
+        } else if (await isCommit(commitHash)) {
+            // if it is a commit hash, it will read the file and get the commit hash
+            commitContent = await fs.readFile(`.gitj/objects/${commitHash.slice(0, 2)}/${commitHash.slice(2)}`, 'utf-8');
+        } else {
+            return { error: 'Branch or Commit not found' };
+        }
+        const array = commitContent.split('\n').map(e => e.split(' '))
         const elem = array.find(e => e[0] === 'tree');
         return { data: elem[1], error: null };
     } catch (e) {
-        // if it could not find the commit hash, it means that it is a branch
-        if (e.code === 'ENOENT') {
-            // Find the Branch Name
-            try {
-                const branchHash = await fs.readFile(`.gitj/refs/heads/${commitHash}`, 'utf-8');
-                const commitContent = await fs.readFile(`.gitj/objects/${branchHash.slice(0, 2)}/${branchHash.slice(2)}`, 'utf-8');
-                const array = commitContent.split('\n').map(e=> e.split(' '))
-                const elem = array.find(e => e[0] === 'tree');
-                return { error: null, data: elem[1] };
-            } catch (error) {
-                return { error: 'Branch or Commit not found' };
-            }
+        return { error: 'Unkown Error' };
+    }
+}
 
-        } else {
-            return { error: 'Unkown Error' };
-        }
+async function isBranch(branchName) {
+    try {
+        await fs.readFile(`.gitj/refs/heads/${branchName}`, 'utf-8');
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+async function isCommit(commitHash) {
+    try {
+        await fs.readFile(`.gitj/objects/${commitHash.slice(0, 2)}/${commitHash.slice(2)}`, 'utf-8');
+        return true;
+    } catch (error) {
+        return false;
     }
 }
 
 async function convertTreeObject(treeHash, folderPrefix = '', files = []) {
     const treeObject = await fs.readFile(`.gitj/objects/${treeHash.slice(0, 2)}/${treeHash.slice(2)}`, 'utf-8').catch(e => console.log('Convert Tree Object Error:', e));
-    const array = treeObject.split('\n').map(e=> e.split(' '))
+    const array = treeObject.split('\n').map(e => e.split(' '))
     for (const file of array) {
         if (!file || file.length < 2) continue;
         const [mode, type, hash, name] = file;
