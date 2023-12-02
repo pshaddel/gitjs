@@ -16,7 +16,6 @@ async function checkout(commitHash) {
     // clear the folder
     await removeAllFilesAndFolders(folderPath);
     // create the files and folders based on address on the blob
-    console.log('baseTree:', baseTree);
     await createFilesAndFolders(baseTree, folderPath);
 }
 
