@@ -16,10 +16,13 @@ function add(filename) {
         }
         if (fs.existsSync(`.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`)) {
             // a blob with the same content already exists
-            process.exit(0);
+            // process.exit(0);
+        } else {
+            // write the file to the objects folder
+            fs.writeFileSync(`.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`, content);
         }
-        // write the file to the objects folder
-        fs.writeFileSync(`.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`, content);
+        // add file to the index
+        addStagedFileToIndex(filename, sha);
     } catch (error) {
         console.log(error);
         console.log(`File ${filename} does not exist.`);
@@ -28,3 +31,21 @@ function add(filename) {
 }
 
 add('./sample/src/readme.md')
+
+function addStagedFileToIndex(filename, sha) {
+    const index = fs.readFileSync(".gitj/index", "utf-8");
+    // format: 100644 hash filename
+    // if the file is already in the index, recalculate the hash
+    const lines = index.split("\n");
+    const newLines = [];
+    for (const line of lines) {
+        if (!line) continue;
+        const [mode, hash, name] = line.split(" ");
+        if (name !== filename) {
+            newLines.push(line);
+        }
+    }
+    newLines.push(`100644 ${sha} ${filename}`);
+    console.log(newLines);
+    fs.writeFileSync(".gitj/index", newLines.join("\n"));
+}

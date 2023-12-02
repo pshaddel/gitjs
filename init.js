@@ -10,6 +10,8 @@ function init() {
     fs.writeFileSync(".gitj/refs/heads/master", "");
     // creates a file called .gitj/HEAD
     fs.writeFileSync(".gitj/HEAD", "ref: refs/heads/master");
+    // index file to store staged files
+    fs.writeFileSync(".gitj/index", "");
 }
 
 init();
