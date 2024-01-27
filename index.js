@@ -27,12 +27,11 @@ yargs
     init();
   })
   .command('add [files..]', 'Add files to the staging area', (yargs) => {
-      yargs.positional('files', {
+      yargs.required('files', {
           describe: 'Files to add',
           type: 'array'
         });
     }, function (argv) {
-    console.log('add', yargs.files);
     add(argv.files);
   })
   .command('commit [message]', 'Commit changes', (yargs) => {

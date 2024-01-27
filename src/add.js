@@ -1,7 +1,14 @@
 const fs = require("fs");
 const crypto = require("crypto");
 
-function add(filename) {
+function add(files) {
+    for (const filename of files) {
+    const folder = "./";
+    // check if the gitjs folder exists
+    if (!gitJSFolderExists()) {
+        console.log("Not a git repository");
+        process.exit(1);
+    }
     try {
         // file exists?
         fs.accessSync(filename);
@@ -12,29 +19,30 @@ function add(filename) {
         hash.update(content);
         const sha = hash.digest("hex");
         // create a folder with the first two characters of the hash if it doesn't exist
-        if (!fs.existsSync(`.gitj/objects/${sha.slice(0, 2)}`)) {
-            fs.mkdirSync(`.gitj/objects/${sha.slice(0, 2)}`, { recursive: true });
+        if (!fs.existsSync(`${folder}.gitj/objects/${sha.slice(0, 2)}`)) {
+            fs.mkdirSync(`${folder}.gitj/objects/${sha.slice(0, 2)}`, { recursive: true });
         }
-        if (fs.existsSync(`.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`)) {
+        if (fs.existsSync(`${folder}.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`)) {
             // a blob with the same content already exists
             // process.exit(0);
         } else {
             // write the file to the objects folder
-            fs.writeFileSync(`.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`, content);
+            fs.writeFileSync(`${folder}.gitj/objects/${sha.slice(0, 2)}/${sha.slice(2)}`, content);
         }
         // add file to the index
-        addStagedFileToIndex(filename, sha);
+        addStagedFileToIndex(filename, sha, folder);
     } catch (error) {
         console.log(error);
         console.log(`File ${filename} does not exist.`);
         process.exit(1);
     }
 }
+}
 
 // add('./sample/src/readme.md')
 
-function addStagedFileToIndex(filename, sha) {
-    const index = fs.readFileSync(".gitj/index", "utf-8");
+function addStagedFileToIndex(filename, sha, folder) {
+    const index = fs.readFileSync(folder + ".gitj/index", "utf-8");
     // format: 100644 hash filename
     // if the file is already in the index, recalculate the hash
     const lines = index.split("\n");
@@ -47,8 +55,17 @@ function addStagedFileToIndex(filename, sha) {
         }
     }
     newLines.push(`100644 ${sha} ${filename}`);
-    console.log(newLines);
-    fs.writeFileSync(".gitj/index", newLines.join("\n"));
+    // console.log(newLines);
+    fs.writeFileSync(folder + ".gitj/index", newLines.join("\n"));
+}
+
+function gitJSFolderExists() {
+    try {
+        fs.accessSync(".gitj");
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 module.exports = { add };
