@@ -1,13 +1,9 @@
 #!/usr/bin/env node
-
+const yargs = require('yargs');
 const { checkout } = require('./src/checkout');
 const { init } = require('./src/init');
 const { add } = require('./src/add');
 const { commit } = require('./src/commit');
-
-const yargs = require('yargs');
-// should be able to init
-// gitjs init =>
 
 yargs
   .scriptName("gitjs-parser")
