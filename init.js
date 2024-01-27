@@ -14,4 +14,4 @@ function init() {
     fs.writeFileSync(".gitj/index", "");
 }
 
-init();
+module.exports = { init };

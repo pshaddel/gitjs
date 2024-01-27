@@ -28,9 +28,10 @@ async function commit(commitMessage) {
     await fs.writeFile('.gitj/index', '');
     return commitHash;
 }
-commit('first commit');
 
 async function getLatestCommitHash() {
     const refs = await fs.readFile('.gitj/refs/heads/master', 'utf-8');
     return refs.trim();
 }
+
+module.exports = { commit };

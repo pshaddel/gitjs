@@ -96,4 +96,5 @@ async function createFilesAndFolders(files, folderPath) {
     }
 }
 
-checkout('master');
+// checkout('master');
+module.exports = { checkout };

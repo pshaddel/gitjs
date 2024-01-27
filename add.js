@@ -1,5 +1,6 @@
 const fs = require("fs");
 const crypto = require("crypto");
+
 function add(filename) {
     try {
         // file exists?
@@ -30,7 +31,7 @@ function add(filename) {
     }
 }
 
-add('./sample/src/readme.md')
+// add('./sample/src/readme.md')
 
 function addStagedFileToIndex(filename, sha) {
     const index = fs.readFileSync(".gitj/index", "utf-8");
@@ -49,3 +50,5 @@ function addStagedFileToIndex(filename, sha) {
     console.log(newLines);
     fs.writeFileSync(".gitj/index", newLines.join("\n"));
 }
+
+module.exports = { add };
