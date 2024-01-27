@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const { checkout } = require('./checkout');
-const { init } = require('./init');
-const { add } = require('./add');
-const { commit } = require('./commit');
+const { checkout } = require('./src/checkout');
+const { init } = require('./src/init');
+const { add } = require('./src/add');
+const { commit } = require('./src/commit');
 
 const yargs = require('yargs');
 // should be able to init

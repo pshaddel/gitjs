@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "eslint": "^8.56.0",
     "yargs": "^17.7.2"
-  }
+  },
+  "main": "index.js"
 }
