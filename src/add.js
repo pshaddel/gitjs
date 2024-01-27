@@ -1,9 +1,9 @@
 const fs = require("fs");
 const crypto = require("crypto");
+const { gitJSFolderExists } = require("./utils");
 
 function add(files) {
     for (const filename of files) {
-    const folder = "./";
     // check if the gitjs folder exists
     if (!gitJSFolderExists()) {
         console.log("Not a git repository");
@@ -57,15 +57,6 @@ function addStagedFileToIndex(filename, sha, folder) {
     newLines.push(`100644 ${sha} ${filename}`);
     // console.log(newLines);
     fs.writeFileSync(folder + ".gitj/index", newLines.join("\n"));
-}
-
-function gitJSFolderExists() {
-    try {
-        fs.accessSync(".gitj");
-        return true;
-    } catch (error) {
-        return false;
-    }
 }
 
 module.exports = { add };

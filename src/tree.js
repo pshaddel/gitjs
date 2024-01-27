@@ -1,6 +1,8 @@
 const fs = require('fs').promises;
 const crypto = require('crypto');
 
+// TODO: we have to create this tree only from the staged files not all the files in the folder
+// TODO: If the files are already in the tree, we don't need to create a new tree object, we can use the existing one
 async function createTreeObjectsFromPaths(folderPath) {
     let treeFileContent = '';
     let treeHash = ''

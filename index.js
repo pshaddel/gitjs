@@ -40,7 +40,6 @@ yargs
           type: 'string'
         });
     }, function (argv) {
-    console.log('commit', yargs.message);
     commit(argv.message);
   })
   .help()

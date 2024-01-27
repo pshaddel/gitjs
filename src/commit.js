@@ -1,7 +1,19 @@
 const fs = require('fs').promises;
 const crypto = require('crypto');
+const { gitJSFolderExists } = require('./utils');
 const { createTreeObjectsFromPaths, folderOrFileExist } = require('./tree');
 async function commit(commitMessage) {
+    // check if the gitjs folder exists
+    if (!gitJSFolderExists()) {
+        console.log("Not a git repository");
+        process.exit(1);
+    }
+
+    if (!await isThereStagedFiles()) {
+        console.log("Nothing to commit");
+        process.exit(1);
+    }
+
     const treeHash = await createTreeObjectsFromPaths('./sample');
     const parentHash = await getLatestCommitHash();
     const author = 'test';
@@ -27,6 +39,11 @@ async function commit(commitMessage) {
     // empty the index(where we store staged files)
     await fs.writeFile('.gitj/index', '');
     return commitHash;
+}
+
+async function isThereStagedFiles() {
+    const index = await fs.readFile('.gitj/index', 'utf-8');
+    return index !== '';
 }
 
 async function getLatestCommitHash() {
