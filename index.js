@@ -27,7 +27,7 @@ yargs
       type: 'string',
       default: '.'
     });
-    console.log('init', argv.folder);
+    // console.log('init', argv.folder);
     init();
   })
   .command('add [files..]', 'Add files to the staging area', (yargs) => {

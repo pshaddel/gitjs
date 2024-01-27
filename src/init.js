@@ -18,6 +18,8 @@ function init(folder = './') {
         fs.writeFileSync(folder + ".gitj/HEAD", "ref: refs/heads/master");
         // index file to store staged files
         fs.writeFileSync(folder + ".gitj/index", "");
+
+        console.log("Initialized empty Git repository in " + folder + ".gitj");
     }
 }
 
