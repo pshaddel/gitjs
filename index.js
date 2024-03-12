@@ -23,8 +23,8 @@ yargs
       type: 'string',
       default: '.'
     });
-    // console.log('init', argv.folder);
-    init();
+    console.log('init', argv.folder);
+    init(argv.folder);
   })
   .command('add [files..]', 'Add files to the staging area', (yargs) => {
       yargs.required('files', {
