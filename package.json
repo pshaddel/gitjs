@@ -1,13 +1,13 @@
 {
-  "dependencies": {
-    "eslint": "^8.56.0",
-    "yargs": "^17.7.2"
-  },
-  "main": "index.js",
-  "scripts": {
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "prettier": "^3.2.5"
-  }
+	"dependencies": {
+		"yargs": "^17.7.2"
+	},
+	"main": "index.js",
+	"scripts": {
+		"lint": "biome lint",
+		"format": "biome format"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4"
+	}
 }
